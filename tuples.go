@@ -1,6 +1,9 @@
 package raytracerbook
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Tuple struct {
 	x, y, z, w float64
@@ -46,6 +49,40 @@ func (t Tuple) Negate() Tuple {
 		y: -t.y,
 		z: -t.z,
 		w: -t.w,
+	}
+}
+
+func (t Tuple) Mult(factor float64) Tuple {
+	return Tuple{
+		x: t.x * factor,
+		y: t.y * factor,
+		z: t.z * factor,
+		w: t.w * factor,
+	}
+}
+
+func (t Tuple) Div(factor float64) Tuple {
+	return Tuple{
+		x: t.x / factor,
+		y: t.y / factor,
+		z: t.z / factor,
+		w: t.w / factor,
+	}
+}
+
+func (t Tuple) Magnitude() float64 {
+	return math.Sqrt(
+		math.Pow(t.x, 2) + math.Pow(t.y, 2) + math.Pow(t.z, 2) + math.Pow(t.w, 2),
+	)
+}
+
+func (t Tuple) Normalize() Tuple {
+	mag := t.Magnitude()
+	return Tuple{
+		t.x / mag,
+		t.y / mag,
+		t.z / mag,
+		t.w / mag,
 	}
 }
 

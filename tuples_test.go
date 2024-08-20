@@ -1,6 +1,9 @@
 package raytracerbook
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestTupleAsPoint(t *testing.T) {
 	a := Tuple{4.3, -4.2, 3.1, 1.0}
@@ -123,5 +126,105 @@ func TestSubVectorZero(t *testing.T) {
 	expected := NewVector(-1, 2, -3)
 	if !res.Equals(expected) {
 		t.Errorf("Expected zero vector minus %s to be equal to %s", v, expected)
+	}
+}
+
+// Scenario: Negating a tuple
+// Given a ← tuple(1, -2, 3, -4)
+// Then -a = tuple(-1, 2, -3, 4)
+func TestNegateTuple(t *testing.T) {
+	a := Tuple{x: 1, y: -2, z: 3, w: -4}
+	res := a.Negate()
+	expected := Tuple{x: -1, y: 2, z: -3, w: 4}
+	if !res.Equals(expected) {
+		t.Errorf("Expected %s.Negate() to be equal to %s", a, expected)
+	}
+}
+
+func TestTupleMult(t *testing.T) {
+	testCases := []struct {
+		tuple    Tuple
+		factor   float64
+		expected Tuple
+	}{
+		{Tuple{1, -2, 3, -4}, 3.5, Tuple{3.5, -7, 10.5, -14}},
+		{Tuple{0, 0, 0, 0}, 2, Tuple{0, 0, 0, 0}},
+		{Tuple{1, 2, 3, 4}, 0.5, Tuple{0.5, 1, 1.5, 2}},
+		{Tuple{1, 2, 3, 4}, 1, Tuple{1, 2, 3, 4}},
+	}
+
+	for _, tc := range testCases {
+		result := tc.tuple.Mult(tc.factor)
+		if !result.Equals(tc.expected) {
+			t.Errorf("Expected %v multiplied by %v to be %v, but got %v", tc.tuple, tc.factor, tc.expected, result)
+		}
+	}
+}
+
+func TestTupleDiv(t *testing.T) {
+	testCases := []struct {
+		tuple    Tuple
+		factor   float64
+		expected Tuple
+	}{
+		{Tuple{1, -2, 3, -4}, 2, Tuple{0.5, -1, 1.5, -2}},
+		{Tuple{0, 0, 0, 0}, 2, Tuple{0, 0, 0, 0}},
+		{Tuple{1, 2, 3, 4}, 1, Tuple{1, 2, 3, 4}},
+		{Tuple{1, 2, 3, 4}, 4, Tuple{0.25, 0.5, 0.75, 1}},
+	}
+
+	for _, tc := range testCases {
+		result := tc.tuple.Div(tc.factor)
+		if !result.Equals(tc.expected) {
+			t.Errorf("Expected %v divided by %v to be %v, but got %v", tc.tuple, tc.factor, tc.expected, result)
+		}
+	}
+}
+
+func TestVectorMagnitude(t *testing.T) {
+	testCases := []struct {
+		vector   Tuple
+		expected float64
+	}{
+		{NewVector(1, 0, 0), 1},
+		{NewVector(0, 1, 0), 1},
+		{NewVector(0, 0, 1), 1},
+		{NewVector(1, 2, 3), math.Sqrt(14)},
+		{NewVector(-1, -2, -3), math.Sqrt(14)},
+	}
+
+	for _, tc := range testCases {
+		result := tc.vector.Magnitude()
+		if !FpEquals(result, tc.expected) {
+			t.Errorf("Expected magnitude of %v to be %v, but got %v", tc.vector, tc.expected, result)
+		}
+	}
+}
+
+// Scenario: Normalizing vector(4, 0, 0) gives (1, 0, 0)
+// Given v ← vector(4, 0, 0)
+// Then normalize(v) = vector(1, 0, 0)
+// Scenario: Normalizing vector(1, 2, 3)
+// Given v ← vector(1, 2, 3)
+// Then normalize(v) = approximately vector(0.26726, 0.53452, 0.80178)
+// Scenario: The magnitude of a normalized vector Given v ← vector(1, 2, 3)
+// When norm ← normalize(v)
+// Then magnitude(norm) = 1
+func TestVectorNormalize(t *testing.T) {
+	testCases := []struct {
+		vector   Tuple
+		expected Tuple
+	}{
+		{NewVector(4, 0, 0), NewVector(1, 0, 0)},
+		{NewVector(1, 2, 3), NewVector(0.26726, 0.53452, 0.80178)},
+	}
+	for _, tc := range testCases {
+		result := tc.vector.Normalize()
+		if !result.Equals(tc.expected) {
+			t.Errorf("Expected normalized %v to be %v, but got %v", tc.vector, tc.expected, result)
+		}
+		if !FpEquals(1, result.Magnitude()) {
+			t.Errorf("Expected magnitude of normalized %v to be %v, but got %v", tc.vector, 1, result.Magnitude())
+		}
 	}
 }
