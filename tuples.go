@@ -86,6 +86,20 @@ func (t Tuple) Normalize() Tuple {
 	}
 }
 
+func (t Tuple) DotProduct(t2 Tuple) float64 {
+	return t.x*t2.x + t.y*t2.y + t.z*t2.z + t.w*t2.w
+}
+
+// function cross(a, b)
+// return vector(a.y * b.z - a.z * b.y,
+// end function
+// a.z * b.x - a.x * b.z,
+// a.x * b.y - a.y * b.x)
+
+func (t Tuple) CrossProduct(t2 Tuple) Tuple {
+	return NewVector(t.y*t2.z-t.z*t2.y, t.z*t2.x-t.x*t2.z, t.x*t2.y-t.y*t2.x)
+}
+
 func NewPoint(x float64, y float64, z float64) Tuple {
 	return Tuple{x: x, y: y, z: z, w: 1.0}
 }

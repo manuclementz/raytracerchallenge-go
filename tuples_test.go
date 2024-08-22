@@ -228,3 +228,37 @@ func TestVectorNormalize(t *testing.T) {
 		}
 	}
 }
+
+// Scenario: The dot product of two tuples
+// Given a ← vector(1, 2, 3)
+// And b ← vector(2, 3, 4)
+// Then dot(a, b) = 20
+func TestVectorDotProduct(t *testing.T) {
+	a := NewVector(1, 2, 3)
+	b := NewVector(2, 3, 4)
+	expected := 20.0
+	result := a.DotProduct(b)
+	if !FpEquals(expected, result) {
+		t.Errorf("Expected dot product of %s and %s to be %v, got %v", a, b, expected, result)
+	}
+}
+
+// Scenario: The cross product of two vectors
+// Given a ← vector(1, 2, 3)
+// And b ← vector(2, 3, 4)
+// Then cross(a, b) = vector(-1, 2, -1)
+// And cross(b, a) = vector(1, -2, 1)
+func TestVectorCrossProduct(t *testing.T) {
+	a := NewVector(1, 2, 3)
+	b := NewVector(2, 3, 4)
+	expectedAB := NewVector(-1, 2, -1)
+	expectedBA := NewVector(1, -2, 1)
+	resAB := a.CrossProduct(b)
+	resBA := b.CrossProduct(a)
+	if !resAB.Equals(expectedAB) {
+		t.Errorf("Expected cross product of %s and %s to be %v, got %v", a, b, expectedAB, resAB)
+	}
+	if !resBA.Equals(expectedBA) {
+		t.Errorf("Expected cross product of %s and %s to be %v, got %v", b, a, expectedBA, resBA)
+	}
+}
