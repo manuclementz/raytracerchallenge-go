@@ -1,4 +1,4 @@
-package raytracerbook
+package core
 
 import (
 	"fmt"
@@ -6,88 +6,88 @@ import (
 )
 
 type Tuple struct {
-	x, y, z, w float64
+	X, Y, Z, W float64
 }
 
 func (t Tuple) String() string {
-	return fmt.Sprintf("Tuple { %f, %f, %f, %f }", t.x, t.y, t.z, t.w)
+	return fmt.Sprintf("Tuple { %f, %f, %f, %f }", t.X, t.Y, t.Z, t.W)
 }
 
 func (t Tuple) IsPoint() bool {
-	return t.w == 1.0
+	return t.W == 1.0
 }
 
 func (t Tuple) IsVector() bool {
-	return t.w == 0.0
+	return t.W == 0.0
 }
 
 func (t Tuple) Equals(t2 Tuple) bool {
-	return FpEquals(t.x, t2.x) && FpEquals(t.y, t2.y) && FpEquals(t.z, t2.z) && t.w == t2.w
+	return FpEquals(t.X, t2.X) && FpEquals(t.Y, t2.Y) && FpEquals(t.Z, t2.Z) && t.W == t2.W
 }
 
 func (t Tuple) Add(t2 Tuple) Tuple {
 	return Tuple{
-		x: t.x + t2.x,
-		y: t.y + t2.y,
-		z: t.z + t2.z,
-		w: t.w + t2.w,
+		X: t.X + t2.X,
+		Y: t.Y + t2.Y,
+		Z: t.Z + t2.Z,
+		W: t.W + t2.W,
 	}
 }
 
 func (t Tuple) Sub(t2 Tuple) Tuple {
 	return Tuple{
-		x: t.x - t2.x,
-		y: t.y - t2.y,
-		z: t.z - t2.z,
-		w: t.w - t2.w,
+		X: t.X - t2.X,
+		Y: t.Y - t2.Y,
+		Z: t.Z - t2.Z,
+		W: t.W - t2.W,
 	}
 }
 
 func (t Tuple) Negate() Tuple {
 	return Tuple{
-		x: -t.x,
-		y: -t.y,
-		z: -t.z,
-		w: -t.w,
+		X: -t.X,
+		Y: -t.Y,
+		Z: -t.Z,
+		W: -t.W,
 	}
 }
 
 func (t Tuple) Mult(factor float64) Tuple {
 	return Tuple{
-		x: t.x * factor,
-		y: t.y * factor,
-		z: t.z * factor,
-		w: t.w * factor,
+		X: t.X * factor,
+		Y: t.Y * factor,
+		Z: t.Z * factor,
+		W: t.W * factor,
 	}
 }
 
 func (t Tuple) Div(factor float64) Tuple {
 	return Tuple{
-		x: t.x / factor,
-		y: t.y / factor,
-		z: t.z / factor,
-		w: t.w / factor,
+		X: t.X / factor,
+		Y: t.Y / factor,
+		Z: t.Z / factor,
+		W: t.W / factor,
 	}
 }
 
 func (t Tuple) Magnitude() float64 {
 	return math.Sqrt(
-		math.Pow(t.x, 2) + math.Pow(t.y, 2) + math.Pow(t.z, 2) + math.Pow(t.w, 2),
+		math.Pow(t.X, 2) + math.Pow(t.Y, 2) + math.Pow(t.Z, 2) + math.Pow(t.W, 2),
 	)
 }
 
 func (t Tuple) Normalize() Tuple {
 	mag := t.Magnitude()
 	return Tuple{
-		t.x / mag,
-		t.y / mag,
-		t.z / mag,
-		t.w / mag,
+		t.X / mag,
+		t.Y / mag,
+		t.Z / mag,
+		t.W / mag,
 	}
 }
 
 func (t Tuple) DotProduct(t2 Tuple) float64 {
-	return t.x*t2.x + t.y*t2.y + t.z*t2.z + t.w*t2.w
+	return t.X*t2.X + t.Y*t2.Y + t.Z*t2.Z + t.W*t2.W
 }
 
 // function cross(a, b)
@@ -97,13 +97,13 @@ func (t Tuple) DotProduct(t2 Tuple) float64 {
 // a.x * b.y - a.y * b.x)
 
 func (t Tuple) CrossProduct(t2 Tuple) Tuple {
-	return NewVector(t.y*t2.z-t.z*t2.y, t.z*t2.x-t.x*t2.z, t.x*t2.y-t.y*t2.x)
+	return NewVector(t.Y*t2.Z-t.Z*t2.Y, t.Z*t2.X-t.X*t2.Z, t.X*t2.Y-t.Y*t2.X)
 }
 
 func NewPoint(x float64, y float64, z float64) Tuple {
-	return Tuple{x: x, y: y, z: z, w: 1.0}
+	return Tuple{X: x, Y: y, Z: z, W: 1.0}
 }
 
 func NewVector(x float64, y float64, z float64) Tuple {
-	return Tuple{x: x, y: y, z: z, w: 0.0}
+	return Tuple{X: x, Y: y, Z: z, W: 0.0}
 }

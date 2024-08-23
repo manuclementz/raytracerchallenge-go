@@ -1,3 +1,3 @@
-module raytracerbook
+module raytracerchallenge
 
 go 1.23.0

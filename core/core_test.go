@@ -1,4 +1,4 @@
-package raytracerbook
+package core
 
 import "testing"
 

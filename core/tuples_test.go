@@ -1,4 +1,4 @@
-package raytracerbook
+package core
 
 import (
 	"math"
@@ -8,7 +8,7 @@ import (
 func TestTupleAsPoint(t *testing.T) {
 	a := Tuple{4.3, -4.2, 3.1, 1.0}
 
-	if a.x != 4.3 || a.y != -4.2 || a.z != 3.1 || a.w != 1.0 {
+	if a.X != 4.3 || a.Y != -4.2 || a.Z != 3.1 || a.W != 1.0 {
 		t.Errorf("Expected a to be (4.3, -4.2, 3.1, 1.0), got %v", a)
 	}
 
@@ -24,7 +24,7 @@ func TestTupleAsPoint(t *testing.T) {
 func TestTupleAsVector(t *testing.T) {
 	a := Tuple{4.3, -4.2, 3.1, 0.0}
 
-	if a.x != 4.3 || a.y != -4.2 || a.z != 3.1 || a.w != 0.0 {
+	if a.X != 4.3 || a.Y != -4.2 || a.Z != 3.1 || a.W != 0.0 {
 		t.Errorf("Expected a to be (4.3, -4.2, 3.1, 0.0), got %v", a)
 	}
 
@@ -52,9 +52,9 @@ func TestVectorMaker(t *testing.T) {
 }
 
 func TestEquals(t *testing.T) {
-	t1 := Tuple{x: 1.0, y: 1.0, z: 1.0, w: 1.0}
-	t2 := Tuple{x: 1.00000002, y: 1.0, z: 1.0, w: 1.0}
-	t3 := Tuple{x: 2.0, y: 2.2, z: 2.0, w: 0.0}
+	t1 := Tuple{X: 1.0, Y: 1.0, Z: 1.0, W: 1.0}
+	t2 := Tuple{X: 1.00000002, Y: 1.0, Z: 1.0, W: 1.0}
+	t3 := Tuple{X: 2.0, Y: 2.2, Z: 2.0, W: 0.0}
 	if !t1.Equals(t2) {
 		t.Errorf("Expected t1 to be equal to t2")
 	}
@@ -133,9 +133,9 @@ func TestSubVectorZero(t *testing.T) {
 // Given a ← tuple(1, -2, 3, -4)
 // Then -a = tuple(-1, 2, -3, 4)
 func TestNegateTuple(t *testing.T) {
-	a := Tuple{x: 1, y: -2, z: 3, w: -4}
+	a := Tuple{X: 1, Y: -2, Z: 3, W: -4}
 	res := a.Negate()
-	expected := Tuple{x: -1, y: 2, z: -3, w: 4}
+	expected := Tuple{X: -1, Y: 2, Z: -3, W: 4}
 	if !res.Equals(expected) {
 		t.Errorf("Expected %s.Negate() to be equal to %s", a, expected)
 	}
